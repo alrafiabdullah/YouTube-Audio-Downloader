@@ -16,18 +16,21 @@
         </form>
 
         <h5>Total Audios: <span style="color: blue;">{{total}}</span></h5>
-        <table border="1" class="mb-3">
+        <h5>Total Pages: <span style="color: blue;">{{page}}</span></h5>
+        <table border="1" class="mb-3 mt-3">
             <thead align="center">
+                <th>Serial</th>
                 <th>Name</th>
                 <th>Time</th>
                 <th>Link</th>
             </thead>           
             <tbody>
                 {% for audio in audios %}
-                    <tr>
+                    <tr align="center">
+                        <td>{{audio.pk}}</td>
                         <td style="padding: 1%;">{{audio.name}}</td>
                         <td>{{audio.downloaded_at | timesince}} ago</td>
-                        <td><a target="_blank" href={{audio.audio.url}} download={{audio.audio.url}}>Download</a></td>
+                        <td><a target="_blank" href={% url 'download' audio.name %}>Download</a></td>
                         
                     </tr>
                 {% endfor %}
