@@ -11,7 +11,7 @@
         {% endfor %}
         <form class="m-3" action={% url 'index' %} method="POST">
             {% csrf_token %}
-            <input class="form-control" type="url" name="url" required>
+            <input class="form-control" type="url" name="url" placeholder="Enter YouTube URL" required>
             <input class="btn btn-primary mt-3" type="submit" value="Convert">
         </form>
 
