@@ -34,11 +34,16 @@ def index(request):
                 video_file.download(output_path="media/video")
                 break
 
-        video_title = f"media/video/{video_information.title}.mp4"
+        video_title = video_information.title.replace("'", "")
+        video_title = video_title.replace(".", "")
+        video_title = video_title.replace(":", "")
+        video_title = video_title.replace(",", "")
 
-        video = VideoFileClip(video_title)
+        video = VideoFileClip(f"media/video/{video_title}.mp4")
         video.audio.write_audiofile(
             f"media/audio/{video_information.title}.mp3")
+
+        video.close()
 
         song = Temporary.objects.create(
             name=video_information.title,
@@ -54,7 +59,7 @@ def index(request):
 
     audios = Temporary.objects.all().order_by("-downloaded_at")
 
-    pagination = Paginator(audios, 5)
+    pagination = Paginator(audios, 10)
     page_number = request.GET.get("page", 1)
 
     try:
