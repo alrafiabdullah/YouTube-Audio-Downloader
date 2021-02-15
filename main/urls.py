@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     path("", views.index, name="index"),
-    path("download/<str:path>", serve, {"document_root": settings.MEDIA_ROOT}),
+    path("download/<str:path>", views.download, name="download"),
 ]
 
 urlpatterns += static(settings.STATIC_URL,
