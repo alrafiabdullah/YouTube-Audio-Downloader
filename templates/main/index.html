@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+
+
+{% block bodyblock %}
+    <div align="center">
+        <h3>YouTube Audio Downloader</h3>
+        {% for message in messages %}
+        <div class="alert alert-{{message.tags}}" role="alert">
+            {{ message }}
+        </div>            
+        {% endfor %}
+        <form class="m-3" action={% url 'index' %} method="POST">
+            {% csrf_token %}
+            <input class="form-control" type="url" name="url" required>
+            <input class="btn btn-primary mt-3" type="submit" value="Convert">
+        </form>
+
+        <h5>Total Audios: <span style="color: blue;">{{total}}</span></h5>
+        <table border="1" class="mb-3">
+            <thead align="center">
+                <th>Name</th>
+                <th>Time</th>
+                <th>Link</th>
+            </thead>           
+            <tbody>
+                {% for audio in audios %}
+                    <tr>
+                        <td style="padding: 1%;">{{audio.name}}</td>
+                        <td>{{audio.downloaded_at | timesince}} ago</td>
+                        <td><a target="_blank" href={{audio.audio.url}} download={{audio.audio.url}}>Download</a></td>
+                        
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+
+        {% if audios.has_previous %}
+            <a class="btn btn-info" href="{% url 'index' %}?page={{audios.previous_page_number}}">Previous Page</a>
+        {% endif %} 
+
+        {% if audios.has_next %}
+            <a class="btn btn-info" href="{% url 'index' %}?page={{audios.next_page_number}}">Next Page</a>
+        {% endif %}
+    </div>
+{% endblock bodyblock %}

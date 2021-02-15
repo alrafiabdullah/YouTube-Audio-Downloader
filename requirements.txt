@@ -1,0 +1,9 @@
+asgiref==3.3.1
+autopep8==1.5.5
+Django==3.1.6
+pycodestyle==2.6.0
+pytube==10.4.1
+pytz==2021.1
+sqlparse==0.4.1
+toml==0.10.2
+typing-extensions==3.7.4.3
