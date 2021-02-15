@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, reverse
 from django.contrib import messages
 from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.core.paginator import Paginator, EmptyPage
+from django.conf import settings
 
 from pytube import YouTube
 from moviepy.editor import *
@@ -46,7 +47,7 @@ def index(request):
         video.close()
 
         song = Temporary.objects.create(
-            name=video_information.title,
+            name=video_information.title+".mp3",
             audio=os.path.join(f"audio/{video_information.title}.mp3"),
         )
 
@@ -69,18 +70,20 @@ def index(request):
 
     context = {
         "audios": page,
-        "total": Temporary.objects.count()
+        "total": Temporary.objects.count(),
+        "page": pagination.num_pages
     }
     return render(request, "main/index.html", context)
 
 
 def download(request, path):
     file_path = os.path.join(settings.MEDIA_ROOT, path)
+    print(file_path)
 
     if os.path.exists(file_path):
-        with open(file_path, "rb") as fh:
+        with open(file_path, "rb") as music:
             response = HttpResponse(
-                fh.read(), content_type="application/audio")
+                music.read(), content_type="application/audio")
             response["Content-Disposition"] = "inline;filename=" + \
                 os.path.basename(file_path)
             return response
